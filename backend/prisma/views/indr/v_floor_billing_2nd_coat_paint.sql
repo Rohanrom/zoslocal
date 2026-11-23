@@ -1,0 +1,31 @@
+SELECT
+  row_type,
+  section_title,
+  floor_label,
+  floor_no,
+  application,
+  flat,
+  description,
+  layer_name,
+  layer_sort,
+  unit,
+  nos,
+  ceiling_area,
+  ceiling_batch,
+  ceiling_batch_no,
+  ceiling_billing_date,
+  ceiling_billing_number,
+  wall_area,
+  wall_batch,
+  wall_batch_no,
+  wall_billing_date,
+  wall_billing_number,
+  batch_summary,
+  latest_row_batch_no,
+  is_latest_batch,
+  row_highlight,
+  total_area
+FROM
+  indr.v_billing_floor_layer_detail
+WHERE
+  (layer_name = '2nd Coat Paint' :: text);

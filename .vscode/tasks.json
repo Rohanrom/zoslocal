@@ -1,0 +1,74 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Install: all",
+      "detail": "npm install in backend and frontend, then generate the Prisma client",
+      "dependsOrder": "sequence",
+      "dependsOn": ["Install: backend", "Prisma: generate", "Install: frontend"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Install: backend",
+      "type": "shell",
+      "command": "npm install",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Install: frontend",
+      "type": "shell",
+      "command": "npm install",
+      "options": { "cwd": "${workspaceFolder}/frontend" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Prisma: generate",
+      "type": "shell",
+      "command": "npx prisma generate",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run: backend",
+      "type": "shell",
+      "command": "npm run start:dev",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "isBackground": true,
+      "presentation": { "group": "zos", "panel": "dedicated" },
+      "problemMatcher": {
+        "owner": "nest",
+        "pattern": { "regexp": "^__never_matches__$" },
+        "background": {
+          "activelyMatches": true,
+          "beginsPattern": "Starting compilation|File change detected",
+          "endsPattern": "ZOS BACKEND STARTED|Found \\d+ errors?"
+        }
+      }
+    },
+    {
+      "label": "Run: frontend",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": { "cwd": "${workspaceFolder}/frontend" },
+      "isBackground": true,
+      "presentation": { "group": "zos", "panel": "dedicated" },
+      "problemMatcher": {
+        "owner": "next",
+        "pattern": { "regexp": "^__never_matches__$" },
+        "background": {
+          "activelyMatches": true,
+          "beginsPattern": "next dev|Starting",
+          "endsPattern": "Ready in|Local:"
+        }
+      }
+    },
+    {
+      "label": "Run: backend + frontend",
+      "detail": "Starts both in side-by-side terminals",
+      "dependsOn": ["Run: backend", "Run: frontend"],
+      "problemMatcher": [],
+      "group": { "kind": "build", "isDefault": true }
+    }
+  ]
+}

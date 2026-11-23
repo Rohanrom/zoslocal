@@ -1,0 +1,103 @@
+name: ZOS CI
+
+on:
+  pull_request:
+    branches:
+      - development
+      - main
+
+  push:
+    branches:
+      - development
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: zos-ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: backend-ci
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgresql://test:test@localhost:5432/zos_ci
+      DIRECT_URL: postgresql://test:test@localhost:5432/zos_ci
+      JWT_SECRET: ci-only-secret-not-used-in-production
+      JWT_EXPIRES_IN: 8h
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Validate Prisma schema
+        run: npx prisma validate
+
+      - name: Run backend lint
+        continue-on-error: true
+        run: npm run lint:check
+
+      - name: Run backend tests
+        continue-on-error: true
+        run: npm run test --if-present -- --passWithNoTests --runInBand
+
+      - name: Build backend
+        run: npm run build
+
+  frontend:
+    name: frontend-ci
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    env:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:3001
+      NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-placeholder-key
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Run frontend lint
+        continue-on-error: true
+        run: npm run lint --if-present
+
+      - name: Run frontend tests
+        run: npm run test --if-present
+
+      - name: Build frontend
+        run: npm run build

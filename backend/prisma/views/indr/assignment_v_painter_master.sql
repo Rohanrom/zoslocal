@@ -1,0 +1,9 @@
+SELECT
+  painter_id,
+  painter_name,
+  current_site,
+  category,
+  daily_wage,
+  STATUS
+FROM
+  indr.all_site_painter_master;

@@ -1,0 +1,1424 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../generated/prisma"
+  previewFeatures = ["views", "partialIndexes"]
+  moduleFormat    = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["indr", "public"]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model application_aph_1_ {
+  ApplicationID String  @id(map: "application_aph_1_pk")
+  Application   String?
+  FlatStatus    String?
+  BlockID       String?
+  Related_Flats String? @map("Related Flats")
+
+  @@map("application aph(1)")
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model backend_aph {
+  ID                   String?
+  Block                String?
+  Application          String?
+  Flat                 String?
+  Work_Layer           String?   @map("Work Layer")
+  Date                 DateTime? @db.Date
+  WALLName             String?
+  Area                 String?
+  Painter_Name         String?   @map("Painter Name")
+  Machine_or_Manual    String?   @map("Machine or Manual")
+  Working_Hours        Decimal?  @map("Working Hours") @db.Decimal
+  Work_Status          String?   @map("Work Status")
+  Site                 String?
+  Material_Name        String?   @map("Material Name")
+  Material_Used__L_KG_ Decimal?  @map("Material Used (L/KG)") @db.Decimal
+  Remark               String?
+  LayerID              String?
+  user                 String?
+  BackendRowID         BigInt    @id(map: "backend_aph_pk") @default(autoincrement())
+
+  @@map("backend aph")
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model block {
+  block_id   String   @map("block id")
+  block_name String   @id
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model flat_aph_1_ {
+  FlatID                String  @id(map: "flat_aph_1_pk")
+  ApplicationID         String?
+  FlatName              String?
+  Projection_Total_Area String? @map("Projection Total Area")
+
+  @@map("flat aph(1)")
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model layer_aph_1_ {
+  LayerID                      String  @id
+  LAYERName                    String?
+  Block                        String?
+  Application                  String?
+  Flat                         String?
+  ID                           String?
+  Related_Backends             String? @map("Related Backends")
+  Projection_Order             Int?    @map("Projection Order")
+  Projection_Billable_         String? @map("Projection Billable?")
+  Projection_Total_Area        String? @map("Projection Total Area")
+  Projection_Done_Area         String? @map("Projection Done Area")
+  Remaining_Area               String? @map("Remaining Area")
+  Productivity_Sqft_Per_Hour   String? @map("Productivity Sqft Per Hour")
+  Projection_Work_Mode         String? @map("Projection Work Mode")
+  Labour_Hours_Required        String? @map("Labour Hours Required")
+  Painter_Count_Required       String? @map("Painter Count Required")
+  Days_Required                String? @map("Days Required")
+  Layer_Material_Key           String? @map("Layer Material Key")
+  Projection_Material_Name     String? @map("Projection Material Name")
+  Projection_Material_Coverage Int?    @map("Projection Material Coverage")
+  Projection_Material_Rate     String? @map("Projection Material Rate")
+  Material_Required            String? @map("Material Required")
+  Material_Cost                String? @map("Material Cost")
+
+  @@map("layer aph(1)")
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model material_projection {
+  Application          String?
+  Work_Layer           String?  @map("Work Layer")
+  Material_Name        String?  @map("Material Name")
+  Coverage             Int?
+  Rate                 Decimal? @db.Decimal
+  Material_Key         String?  @map("Material Key")
+  MaterialProjectionID BigInt   @id @default(autoincrement())
+
+  @@map("material projection")
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model order_aph_2_ {
+  Work_Layer  String?  @map("Work Layer")
+  Order       Int?
+  Application String?
+  Billable    Boolean?
+  OrderID     BigInt   @id @default(autoincrement())
+
+  @@map("order aph(2)")
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model productivity_aph_1_ {
+  Work_Layer           String? @map("Work Layer")
+  Application          String?
+  Machine_or_Manual    String? @map("Machine or Manual")
+  Ideal_Sqft_Hr_Labour String? @map("Ideal Sqft/Hr/Labour")
+  ProductivityID       BigInt  @id @default(autoincrement())
+
+  @@map("productivity aph(1)")
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model surface_aph {
+  Block                String
+  Application          String?
+  Base                 String
+  Wall                 String?
+  Untitled_Column_1    String? @map("Untitled Column 1")
+  Untitled_Column_2    String? @map("Untitled Column 2")
+  Untitled_Column_3    String? @map("Untitled Column 3")
+  Untitled_Column_4    String? @map("Untitled Column 4")
+  Application_Area     String? @map("Application Area")
+  Ceiling_Walls_Number String? @map("Ceiling/Walls Number")
+  Total_Area__SFT_     String? @map("Total Area (SFT)")
+  SurfaceID            BigInt  @id @default(autoincrement())
+
+  @@map("surface aph")
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model app_users {
+  UserID       BigInt   @id @default(autoincrement())
+  Username     String   @unique
+  PasswordHash String
+  Role         String   @default("viewer")
+  ProjectID    String?
+  IsActive     Boolean  @default(true)
+  CreatedAt    DateTime @default(now()) @db.Timestamptz(6)
+
+  @@schema("public")
+}
+
+model billing_batch_data {
+  Flat                   String  @id
+  st_Fine_Putty_Ceiling  String? @map("1st Fine Putty Ceiling")
+  st_Fine_Putty_Wall     String? @map("1st Fine Putty Wall")
+  nd_Fine_Putty_Ceiling  String? @map("2nd Fine Putty Ceiling")
+  nd_Fine_Putty_Wall     String? @map("2nd Fine Putty Wall")
+  st_Coat_Primer_Ceiling String? @map("1st Coat Primer Ceiling")
+  st_Coat_Primer_Wall    String? @map("1st Coat Primer Wall")
+  st_Coat_Paint_Ceiling  String? @map("1st Coat Paint Ceiling")
+  st_Coat_Paint_Wall     String? @map("1st Coat Paint Wall")
+  nd_Coat_Paint_Ceiling  String? @map("2nd Coat Paint Ceiling")
+  nd_Coat_Paint_Wall     String? @map("2nd Coat Paint Wall")
+
+  @@schema("indr")
+}
+
+model billing_tracker_indr {
+  id             String    @id
+  Application    String?
+  Flat           String?
+  Surface_Type   String?   @map("Surface Type")
+  Layer_Name     String?   @map("Layer Name")
+  Billed         Boolean?
+  Billing_Number String?   @map("Billing Number")
+  Billing_Date   DateTime? @map("Billing Date") @db.Date
+  Rate           Decimal?  @db.Decimal(12, 2)
+  Billing_Area   Decimal?  @map("Billing Area") @db.Decimal(14, 2)
+  Status         String?
+  Batch_no_      Int?      @map("Batch no.")
+  WorkDonePct    Decimal?  @db.Decimal(7, 2)
+  Is_Complete    Boolean?  @map("Is Complete")
+  Can_Billed     Boolean?  @map("Can Billed")
+  Batch          String?
+
+  @@index([Batch], map: "idx_billing_tracker_indr_batch")
+  @@index([Batch_no_], map: "idx_billing_tracker_indr_batch_no")
+  @@index([Billed, Is_Complete, Can_Billed], map: "idx_billing_tracker_indr_billed_complete")
+  @@index([Flat, Layer_Name, Surface_Type], map: "idx_billing_tracker_indr_flat_layer_surface")
+  @@index([Status], map: "idx_billing_tracker_indr_status")
+  @@schema("indr")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model flat_area {
+  Flat         String   @id
+  Ceiling_Area Decimal? @default(0) @map("Ceiling Area") @db.Decimal
+  Wall_Area    Decimal? @default(0) @map("Wall Area") @db.Decimal
+
+  @@schema("indr")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model invoice_table {
+  Sl_No                   Decimal  @id @map("Sl No") @db.Decimal
+  Description_of_the_work String   @map("Description of the work")
+  Layer_Name              String   @map("Layer Name")
+  Surface                 String
+  Unit                    String   @default("Sq m")
+  Rate                    Decimal  @default(0) @db.Decimal
+  Quantity_Previous       Decimal? @default(0) @map("Quantity Previous") @db.Decimal
+  Quantity_Current        Decimal? @default(0) @map("Quantity Current") @db.Decimal
+  Quantity_Cumulative     Decimal? @default(0) @map("Quantity Cumulative") @db.Decimal
+  Amount_Previous         Decimal? @default(0) @map("Amount Previous") @db.Decimal
+  Amount_Current          Decimal? @default(0) @map("Amount Current") @db.Decimal
+  Amount_Cumulative       Decimal? @default(0) @map("Amount Cumulative") @db.Decimal
+
+  @@unique([Layer_Name, Surface], map: "invoice_table_layer_surface_unique")
+  @@schema("indr")
+}
+
+model all_site_painter_master {
+  painter_id           String                 @id
+  row_id               String?
+  painter_name         String
+  current_site         String?
+  category             String?
+  daily_wage           Decimal?               @default(0) @db.Decimal
+  status               String?                @default("Active")
+  created_at           DateTime?              @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime?              @default(now()) @db.Timestamptz(6)
+  painter_availability painter_availability[]
+
+  @@schema("indr")
+}
+
+model assignment_change_log {
+  change_id              String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  run_id                 String?                 @db.Uuid
+  recommendation_id      String?                 @db.Uuid
+  assignment_id          String?                 @db.Uuid
+  field_changed          String?
+  old_value              String?
+  new_value              String?
+  reason                 String?
+  changed_by             String?
+  changed_at             DateTime?               @default(now()) @db.Timestamptz(6)
+  approval_required      Boolean?                @default(false)
+  final_assignment       final_assignment?       @relation(fields: [assignment_id], references: [assignment_id], onUpdate: NoAction)
+  recommended_assignment recommended_assignment? @relation(fields: [recommendation_id], references: [recommendation_id], onUpdate: NoAction)
+  assignment_run         assignment_run?         @relation(fields: [run_id], references: [run_id], onUpdate: NoAction)
+
+  @@schema("indr")
+}
+
+model assignment_outcome {
+  outcome_id           String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  assignment_id        String           @unique(map: "assignment_outcome_assignment_unique") @db.Uuid
+  assignment_date      DateTime?        @db.Date
+  assigned_area        Decimal?         @default(0) @db.Decimal
+  actual_area_done     Decimal?         @default(0) @db.Decimal
+  actual_hours         Decimal?         @default(0) @db.Decimal
+  completion_percent   Decimal?         @default(0) @db.Decimal
+  variance_area        Decimal?         @default(0) @db.Decimal
+  outcome_status       String?
+  reason_for_shortfall String?
+  calculated_at        DateTime?        @default(now()) @db.Timestamptz(6)
+  final_assignment     final_assignment @relation(fields: [assignment_id], references: [assignment_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("indr")
+}
+
+model assignment_run {
+  run_id                  String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  site                    String                   @default("Indradhanush")
+  assignment_date         DateTime                 @db.Date
+  generated_at            DateTime                 @default(now()) @db.Timestamptz(6)
+  generated_by            String?
+  status                  String                   @default("Draft")
+  total_available_hours   Decimal?                 @default(0) @db.Decimal
+  total_demand_hours      Decimal?                 @default(0) @db.Decimal
+  total_recommended_hours Decimal?                 @default(0) @db.Decimal
+  idle_hours              Decimal?                 @default(0) @db.Decimal
+  over_assigned_hours     Decimal?                 @default(0) @db.Decimal
+  notes                   String?
+  assignment_change_log   assignment_change_log[]
+  final_assignment        final_assignment[]
+  recommended_assignment  recommended_assignment[]
+  work_demand_item        work_demand_item[]
+
+  @@index([assignment_date], map: "idx_assignment_run_date")
+  @@schema("indr")
+}
+
+model backend {
+  id                 String            @id @default(dbgenerated("(gen_random_uuid())::text"))
+  block              String?
+  application        String?
+  flat               String?
+  work_layer         String?
+  work_date          DateTime?         @db.Date
+  wall_names         String?
+  area               Decimal?          @default(0) @db.Decimal
+  painter_names      String?
+  machine_or_manual  String?
+  working_hours      Decimal?          @default(0) @db.Decimal
+  work_status        String?
+  material_name      String?
+  material_used_l_kg Decimal?          @default(0) @db.Decimal
+  remark             String?
+  created_at         DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime?         @default(now()) @db.Timestamptz(6)
+  layer_id           String?
+  assignment_id      String?           @db.Uuid
+  final_assignment   final_assignment? @relation(fields: [assignment_id], references: [assignment_id], onUpdate: NoAction)
+
+  @@index([assignment_id], map: "idx_backend_assignment_id")
+  @@index([assignment_id, layer_id, work_date], map: "idx_backend_assignment_layer_date")
+  @@index([application, flat, work_layer, work_date], map: "idx_backend_main")
+  @@index([work_status], map: "idx_backend_status")
+  @@schema("indr")
+}
+
+model final_assignment {
+  assignment_id          String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  run_id                 String?                 @db.Uuid
+  recommendation_id      String?                 @db.Uuid
+  assignment_date        DateTime                @db.Date
+  block                  String?
+  application            String?
+  flat                   String?
+  layer_name             String?
+  surface_type           String?
+  assigned_area          Decimal?                @default(0) @db.Decimal
+  expected_hours         Decimal?                @default(0) @db.Decimal
+  machine_or_manual      String?
+  painter_count          Int?                    @default(0)
+  assigned_painter_ids   String[]
+  assigned_painter_names String[]
+  status                 String?                 @default("Published")
+  published_at           DateTime?               @default(now()) @db.Timestamptz(6)
+  published_by           String?
+  created_at             DateTime?               @default(now()) @db.Timestamptz(6)
+  layer_id               String?
+  assignment_change_log  assignment_change_log[]
+  assignment_outcome     assignment_outcome?
+  backend                backend[]
+  recommended_assignment recommended_assignment? @relation(fields: [recommendation_id], references: [recommendation_id], onUpdate: NoAction)
+  assignment_run         assignment_run?         @relation(fields: [run_id], references: [run_id], onUpdate: NoAction)
+  final_assignment_wall  final_assignment_wall[]
+
+  @@index([assignment_date], map: "idx_final_assignment_date")
+  @@index([application, flat, layer_name], map: "idx_final_assignment_main")
+  @@schema("indr")
+}
+
+model final_assignment_wall {
+  final_assignment_wall_id String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  assignment_id            String           @db.Uuid
+  wall_name                String
+  wall_area                Decimal?         @default(0) @db.Decimal
+  assigned_area            Decimal?         @default(0) @db.Decimal
+  reported_area            Decimal?         @default(0) @db.Decimal
+  remaining_area           Decimal?         @default(dbgenerated("GREATEST((COALESCE(assigned_area, (0)::numeric) - COALESCE(reported_area, (0)::numeric)), (0)::numeric)")) @db.Decimal
+  wall_status              String?          @default("Assigned")
+  final_assignment         final_assignment @relation(fields: [assignment_id], references: [assignment_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([assignment_id, wall_name], map: "final_assignment_wall_unique")
+  @@index([assignment_id], map: "idx_final_assignment_wall_assignment")
+  @@schema("indr")
+}
+
+model indr_qc {
+  qc_id        String    @id @default(dbgenerated("(gen_random_uuid())::text"))
+  row_id       String?
+  block        String?
+  application  String?
+  flat         String?
+  layer        String?
+  layer_id     String?
+  layer_order  Decimal?  @db.Decimal
+  wall_names   String?
+  qc_status    String?
+  qc_checklist String?
+  qc_date      DateTime? @db.Date
+  result       String?
+  remark       String?
+  qc_by        String?
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([application, flat, layer, qc_date], map: "idx_qc_main")
+  @@schema("indr")
+}
+
+model layer {
+  layer_id    String    @id @default(dbgenerated("(gen_random_uuid())::text"))
+  flat_id     String?
+  layer_name  String
+  block       String?
+  application String?
+  flat        String?
+  order       Decimal?  @default(999) @db.Decimal
+  billable    Boolean   @default(false)
+  wkdpct      Decimal   @default(0) @db.Decimal
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@unique([application, flat, layer_name], map: "layer_application_flat_layer_unique")
+  @@index([application, flat, layer_name], map: "idx_layer_main")
+  @@index([application, flat, order], map: "idx_layer_order")
+  @@schema("indr")
+}
+
+model painter_availability {
+  availability_id         String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  availability_date       DateTime                @db.Date
+  site                    String                  @default("Indradhanush")
+  painter_id              String
+  availability_status     String                  @default("Available")
+  available_hours         Decimal                 @default(8) @db.Decimal
+  reason                  String?
+  confirmed_by            String?
+  confirmed_at            DateTime?               @default(now()) @db.Timestamptz(6)
+  created_at              DateTime?               @default(now()) @db.Timestamptz(6)
+  all_site_painter_master all_site_painter_master @relation(fields: [painter_id], references: [painter_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([availability_date, site, painter_id], map: "painter_availability_unique")
+  @@schema("indr")
+}
+
+model productivity_master {
+  productivity_id            String    @id @default(dbgenerated("(gen_random_uuid())::text"))
+  row_id                     String?
+  work_layer                 String
+  application                String
+  machine_or_manual          String?
+  ideal_productivity_sqft_hr Decimal?  @default(0) @db.Decimal
+  created_at                 DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at                 DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@unique([application, work_layer, machine_or_manual], map: "productivity_application_layer_mode_unique")
+  @@schema("indr")
+}
+
+model recommended_assignment {
+  recommendation_id              String                        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  run_id                         String                        @db.Uuid
+  demand_id                      String?                       @db.Uuid
+  block                          String?
+  application                    String?
+  flat                           String?
+  layer_name                     String?
+  surface_type                   String?
+  assigned_area                  Decimal?                      @default(0) @db.Decimal
+  required_hours                 Decimal?                      @default(0) @db.Decimal
+  assignment_type                String?                       @default("Full")
+  recommendation_reason          String?
+  warning_status                 String?
+  machine_or_manual              String?
+  painter_count                  Int?                          @default(0)
+  assigned_painter_ids           String[]
+  assigned_painter_names         String[]
+  recommendation_status          String?                       @default("Draft")
+  is_manual_edit                 Boolean?                      @default(false)
+  override_reason                String?
+  created_by                     String?
+  created_at                     DateTime?                     @default(now()) @db.Timestamptz(6)
+  edited_by                      String?
+  edited_at                      DateTime?                     @db.Timestamptz(6)
+  layer_id                       String?
+  selected_productivity_per_hour Decimal?                      @default(0) @db.Decimal
+  productivity_mode_rule         String?
+  assignment_change_log          assignment_change_log[]
+  final_assignment               final_assignment[]
+  work_demand_item               work_demand_item?             @relation(fields: [demand_id], references: [demand_id], onUpdate: NoAction)
+  assignment_run                 assignment_run                @relation(fields: [run_id], references: [run_id], onDelete: Cascade, onUpdate: NoAction)
+  recommended_assignment_wall    recommended_assignment_wall[]
+
+  @@unique([run_id, demand_id], map: "uq_recommended_assignment_one_active_per_demand", where: raw("((demand_id IS NOT NULL) AND (upper(COALESCE(recommendation_status, ''::text)) <> ALL (ARRAY['REMOVED'::text, 'CANCELLED'::text])))"))
+  @@index([run_id], map: "idx_recommended_assignment_run")
+  @@schema("indr")
+}
+
+model recommended_assignment_wall {
+  recommendation_wall_id          String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  recommendation_id               String                 @db.Uuid
+  demand_wall_id                  String?                @db.Uuid
+  wall_name                       String
+  wall_area                       Decimal?               @default(0) @db.Decimal
+  assigned_area                   Decimal?               @default(0) @db.Decimal
+  remaining_area_after_assignment Decimal?               @default(0) @db.Decimal
+  wall_assignment_status          String?                @default("Selected")
+  created_at                      DateTime?              @default(now()) @db.Timestamptz(6)
+  work_demand_wall                work_demand_wall?      @relation(fields: [demand_wall_id], references: [demand_wall_id], onUpdate: NoAction)
+  recommended_assignment          recommended_assignment @relation(fields: [recommendation_id], references: [recommendation_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([recommendation_id, wall_name], map: "recommended_assignment_wall_unique")
+  @@schema("indr")
+}
+
+model surface_number {
+  surface_id     String    @id @default(dbgenerated("(gen_random_uuid())::text"))
+  row_id         String?
+  block          String?
+  application    String?
+  base           String?
+  wall           String?
+  surface_type   String?
+  total_area_sft Decimal?  @default(0) @db.Decimal
+  created_at     DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@unique([application, base, wall], map: "surface_number_application_base_wall_unique")
+  @@index([application, base, wall], map: "idx_surface_number_main")
+  @@schema("indr")
+}
+
+model work_demand_item {
+  demand_id              String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  run_id                 String                   @db.Uuid
+  section                String
+  priority_rank          Int
+  source_table           String?
+  source_id              String?
+  block                  String?
+  application            String?
+  flat                   String?
+  layer_name             String?
+  surface_type           String?
+  layer_order            Decimal?                 @db.Decimal
+  billable               Boolean?                 @default(false)
+  wall_count             Int?                     @default(0)
+  wall_names             String?
+  remaining_area         Decimal?                 @default(0) @db.Decimal
+  productivity_per_hour  Decimal?                 @default(0) @db.Decimal
+  required_hours         Decimal?                 @default(0) @db.Decimal
+  oldest_date            DateTime?                @db.Date
+  eligibility_status     String?                  @default("Available")
+  risk_reason            String?
+  demand_status          String?                  @default("Available")
+  created_at             DateTime?                @default(now()) @db.Timestamptz(6)
+  layer_id               String?
+  machine_or_manual      String?
+  productivity_mode_rule String?
+  recommended_assignment recommended_assignment[]
+  assignment_run         assignment_run           @relation(fields: [run_id], references: [run_id], onDelete: Cascade, onUpdate: NoAction)
+  work_demand_wall       work_demand_wall[]
+
+  @@index([application, flat, layer_name, section], map: "idx_work_demand_item_main")
+  @@index([run_id], map: "idx_work_demand_item_run")
+  @@schema("indr")
+}
+
+model work_demand_wall {
+  demand_wall_id              String                        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  demand_id                   String                        @db.Uuid
+  wall_name                   String
+  wall_area                   Decimal?                      @default(0) @db.Decimal
+  remaining_area              Decimal?                      @default(0) @db.Decimal
+  source_table                String?
+  source_id                   String?
+  demand_wall_status          String?                       @default("Available")
+  recommended_assignment_wall recommended_assignment_wall[]
+  work_demand_item            work_demand_item              @relation(fields: [demand_id], references: [demand_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([demand_id, wall_name], map: "work_demand_wall_unique")
+  @@index([demand_id], map: "idx_work_demand_wall_demand")
+  @@schema("indr")
+}
+
+view v_flat_completion_calc {
+  FlatID                            String?
+  ApplicationID                     String?
+  Application                       String?
+  Flat                              String?
+  Billable_Layer_Count              Int?     @map("Billable Layer Count")
+  Completed_Billable_Layer_Count    Int?     @map("Completed Billable Layer Count")
+  Billable_Total_Area               Decimal? @map("Billable Total Area") @db.Decimal
+  Billable_Done_Area                Decimal? @map("Billable Done Area") @db.Decimal
+  Billable_Remaining_Area           Decimal? @map("Billable Remaining Area") @db.Decimal
+  Flat_Completion_Pct               Decimal? @map("Flat Completion Pct") @db.Decimal
+  Flat_Master_Projection_Total_Area Decimal? @map("Flat Master Projection Total Area") @db.Decimal
+
+  @@schema("public")
+}
+
+view v_projection_layers_billable_base {
+  LayerID               String?
+  Block                 String?
+  Application           String?
+  Flat                  String?
+  LAYERName             String?
+  ID                    String?
+  Related_Backends      String?  @map("Related Backends")
+  Projection_Order      Int?     @map("Projection Order")
+  Billable_Layer_Order  Int?     @map("Billable Layer Order")
+  Billable              Boolean?
+  Projection_Work_Mode  String?  @map("Projection Work Mode")
+  Projection_Total_Area Decimal? @map("Projection Total Area") @db.Decimal
+  Projection_Done_Area  Decimal? @map("Projection Done Area") @db.Decimal
+  Remaining_Area        Decimal? @map("Remaining Area") @db.Decimal
+  Work_Done_Pct         Decimal? @map("Work Done Pct") @db.Decimal
+  Material_Name         String?  @map("Material Name")
+  Material_Required     Decimal? @map("Material Required") @db.Decimal
+  Material_Cost         Decimal? @map("Material Cost") @db.Decimal
+
+  @@schema("public")
+}
+
+view already_billed {
+  id             String?
+  Application    String?
+  Flat           String?
+  Surface_Type   String?   @map("Surface Type")
+  Layer_Name     String?   @map("Layer Name")
+  Billed         Boolean?
+  Billing_Number String?   @map("Billing Number")
+  Billing_Date   DateTime? @map("Billing Date") @db.Date
+  Rate           Decimal?  @db.Decimal(12, 2)
+  Billing_Area   Decimal?  @map("Billing Area") @db.Decimal(14, 2)
+  Status         String?
+  Batch_no_      Int?      @map("Batch no.")
+  WorkDonePct    Decimal?  @db.Decimal(7, 2)
+  Is_Complete    Boolean?  @map("Is Complete")
+  Can_Billed     Boolean?  @map("Can Billed")
+  Batch          String?
+
+  @@schema("indr")
+}
+
+view latest_billing {
+  id             String?
+  Application    String?
+  Flat           String?
+  Surface_Type   String?   @map("Surface Type")
+  Layer_Name     String?   @map("Layer Name")
+  Billed         Boolean?
+  Billing_Number String?   @map("Billing Number")
+  Billing_Date   DateTime? @map("Billing Date") @db.Date
+  Rate           Decimal?  @db.Decimal(12, 2)
+  Billing_Area   Decimal?  @map("Billing Area") @db.Decimal(14, 2)
+  Status         String?
+  Batch_no_      Int?      @map("Batch no.")
+  WorkDonePct    Decimal?  @db.Decimal(7, 2)
+  Is_Complete    Boolean?  @map("Is Complete")
+  Can_Billed     Boolean?  @map("Can Billed")
+  Batch          String?
+
+  @@schema("indr")
+}
+
+view pending_billing {
+  id             String?
+  Application    String?
+  Flat           String?
+  Surface_Type   String?   @map("Surface Type")
+  Layer_Name     String?   @map("Layer Name")
+  Billed         Boolean?
+  Billing_Number String?   @map("Billing Number")
+  Billing_Date   DateTime? @map("Billing Date") @db.Date
+  Rate           Decimal?  @db.Decimal(12, 2)
+  Billing_Area   Decimal?  @map("Billing Area") @db.Decimal(14, 2)
+  Status         String?
+  Batch_no_      Int?      @map("Batch no.")
+  WorkDonePct    Decimal?  @db.Decimal(7, 2)
+  Is_Complete    Boolean?  @map("Is Complete")
+  Can_Billed     Boolean?  @map("Can Billed")
+  Batch          String?
+
+  @@schema("indr")
+}
+
+view sent_for_approval {
+  id             String?
+  Application    String?
+  Flat           String?
+  Surface_Type   String?   @map("Surface Type")
+  Layer_Name     String?   @map("Layer Name")
+  Billed         Boolean?
+  Billing_Number String?   @map("Billing Number")
+  Billing_Date   DateTime? @map("Billing Date") @db.Date
+  Rate           Decimal?  @db.Decimal(12, 2)
+  Billing_Area   Decimal?  @map("Billing Area") @db.Decimal(14, 2)
+  Status         String?
+  Batch_no_      Int?      @map("Batch no.")
+  WorkDonePct    Decimal?  @db.Decimal(7, 2)
+  Is_Complete    Boolean?  @map("Is Complete")
+  Can_Billed     Boolean?  @map("Can Billed")
+  Batch          String?
+
+  @@schema("indr")
+}
+
+view assignment_v_assigned_by_date {
+  assignment_id         String?   @db.Uuid
+  run_id                String?   @db.Uuid
+  assignment_date       DateTime? @db.Date
+  block                 String?
+  application           String?
+  flat                  String?
+  layer_id              String?
+  layer_name            String?
+  surface_type          String?
+  machine_or_manual     String?
+  assignment_status     String?
+  wall_names            String?
+  wall_count            Int?
+  assigned_area         Decimal?  @db.Decimal
+  productivity_per_hour Decimal?  @db.Decimal
+  expected_hours        Decimal?  @db.Decimal
+
+  @@schema("indr")
+}
+
+view assignment_v_backend_done_wall {
+  backend_id        String?
+  layer_id          String?
+  block             String?
+  application       String?
+  flat_id           String?
+  flat              String?
+  layer_name        String?
+  work_date         DateTime? @db.Date
+  wall_name         String?
+  surface_type      String?
+  done_area         Decimal?  @db.Decimal
+  painter_names     String?
+  machine_or_manual String?
+  working_hours     Decimal?  @db.Decimal
+
+  @@schema("indr")
+}
+
+view assignment_v_hour_based_demand {
+  source_id          String?
+  source_wall_id     String?
+  section            String?
+  priority_rank      Int?
+  source_table       String?
+  block              String?
+  application        String?
+  flat               String?
+  layer_id           String?
+  layer_name         String?
+  surface_type       String?
+  layer_order        Decimal?  @db.Decimal
+  billable           Boolean?
+  wall_name          String?
+  wall_area          Decimal?  @db.Decimal
+  remaining_area     Decimal?  @db.Decimal
+  oldest_date        DateTime? @db.Date
+  eligibility_status String?
+  risk_reason        String?
+  is_hour_based      Boolean?
+  total_hours        Decimal?  @db.Decimal
+  reported_hours     Decimal?  @db.Decimal
+  remaining_hours    Decimal?  @db.Decimal
+
+  @@schema("indr")
+}
+
+view assignment_v_hour_layer_status {
+  layer_id        String?
+  block           String?
+  application     String?
+  flat            String?
+  layer_name      String?
+  total_hours     Decimal? @db.Decimal
+  reported_hours  Decimal? @db.Decimal
+  remaining_hours Decimal? @db.Decimal
+  wkdpct          Decimal? @db.Decimal
+
+  @@schema("indr")
+}
+
+view assignment_v_layer_progress_tree {
+  layer_id        String?
+  block           String?
+  application     String?
+  flat            String?
+  layer_name      String?
+  layer_order     Decimal? @db.Decimal
+  flat_sort       Decimal? @db.Decimal
+  no_order_flag   Int?
+  wkdpct          Decimal? @db.Decimal
+  is_hour_based   Boolean?
+  total_hours     Decimal? @db.Decimal
+  reported_hours  Decimal? @db.Decimal
+  remaining_hours Decimal? @db.Decimal
+
+  @@schema("indr")
+}
+
+view assignment_v_layer_status {
+  layer_id    String?
+  flat_id     String?
+  block       String?
+  application String?
+  flat        String?
+  layer_name  String?
+  layer_order Decimal? @db.Decimal
+  billable    Boolean?
+  total_area  Decimal? @db.Decimal
+  done_area   Decimal? @db.Decimal
+  wkdpct      Decimal? @db.Decimal
+
+  @@schema("indr")
+}
+
+view assignment_v_new_layer {
+  source_id          String?
+  source_wall_id     String?
+  section            String?
+  priority_rank      Int?
+  source_table       String?
+  block              String?
+  application        String?
+  flat               String?
+  layer_id           String?
+  layer_name         String?
+  surface_type       String?
+  layer_order        Decimal?  @db.Decimal
+  billable           Boolean?
+  wall_name          String?
+  wall_area          Decimal?  @db.Decimal
+  remaining_area     Decimal?  @db.Decimal
+  oldest_date        DateTime? @db.Date
+  eligibility_status String?
+  risk_reason        String?
+
+  @@schema("indr")
+}
+
+view assignment_v_ongoing {
+  source_id          String?
+  source_wall_id     String?
+  section            String?
+  priority_rank      Int?
+  source_table       String?
+  block              String?
+  application        String?
+  flat               String?
+  layer_id           String?
+  layer_name         String?
+  surface_type       String?
+  layer_order        Decimal?  @db.Decimal
+  billable           Boolean?
+  wall_name          String?
+  wall_area          Decimal?  @db.Decimal
+  remaining_area     Decimal?  @db.Decimal
+  oldest_date        DateTime? @db.Date
+  eligibility_status String?
+  risk_reason        String?
+
+  @@schema("indr")
+}
+
+view assignment_v_painter_capacity {
+  availability_date       DateTime? @db.Date
+  site                    String?
+  available_painter_count BigInt?
+  available_hours         Decimal?  @db.Decimal
+
+  @@schema("indr")
+}
+
+view assignment_v_painter_master {
+  painter_id   String?
+  painter_name String?
+  current_site String?
+  category     String?
+  daily_wage   Decimal? @db.Decimal
+  status       String?
+
+  @@schema("indr")
+}
+
+view assignment_v_planned_vs_done {
+  assignment_id      String?   @db.Uuid
+  assignment_date    DateTime? @db.Date
+  block              String?
+  application        String?
+  flat               String?
+  layer_id           String?
+  layer_name         String?
+  surface_type       String?
+  assigned_area      Decimal?  @db.Decimal
+  actual_area_done   Decimal?  @db.Decimal
+  remaining_area     Decimal?  @db.Decimal
+  expected_hours     Decimal?  @db.Decimal
+  actual_hours       Decimal?  @db.Decimal
+  completion_percent Decimal?  @db.Decimal
+  variance_area      Decimal?  @db.Decimal
+  outcome_status     String?
+
+  @@schema("indr")
+}
+
+view assignment_v_productivity {
+  productivity_id       String?
+  application           String?
+  layer_name            String?
+  machine_or_manual     String?
+  productivity_per_hour Decimal? @db.Decimal
+
+  @@schema("indr")
+}
+
+view assignment_v_productivity_options {
+  application           String?
+  layer_name            String?
+  machine_or_manual     String?
+  productivity_per_hour Decimal? @db.Decimal
+
+  @@schema("indr")
+}
+
+view assignment_v_qc_latest_wall {
+  qc_id       String?
+  block       String?
+  application String?
+  flat        String?
+  layer_id    String?
+  layer_name  String?
+  layer_order Decimal?  @db.Decimal
+  wall_name   String?
+  qc_date     DateTime? @db.Date
+  qc_result   String?
+  remark      String?
+  rn          BigInt?
+
+  @@schema("indr")
+}
+
+view assignment_v_qc_rework {
+  source_id          String?
+  source_wall_id     String?
+  section            String?
+  priority_rank      Int?
+  source_table       String?
+  block              String?
+  application        String?
+  flat               String?
+  layer_id           String?
+  layer_name         String?
+  surface_type       String?
+  layer_order        Decimal?  @db.Decimal
+  billable           Boolean?
+  wall_name          String?
+  wall_area          Decimal?  @db.Decimal
+  remaining_area     Decimal?  @db.Decimal
+  oldest_date        DateTime? @db.Date
+  eligibility_status String?
+  risk_reason        String?
+
+  @@schema("indr")
+}
+
+view assignment_v_reporting_applications {
+  block       String?
+  application String?
+
+  @@schema("indr")
+}
+
+view assignment_v_reporting_blocks {
+  block String?
+
+  @@schema("indr")
+}
+
+view assignment_v_reporting_flats {
+  block       String?
+  application String?
+  flat        String?
+
+  @@schema("indr")
+}
+
+view assignment_v_reporting_layers {
+  block           String?
+  application     String?
+  flat            String?
+  layer_id        String?
+  layer_name      String?
+  layer_order     Decimal? @db.Decimal
+  wkdpct          Decimal? @db.Decimal
+  is_hour_based   Boolean?
+  total_hours     Decimal? @db.Decimal
+  reported_hours  Decimal? @db.Decimal
+  remaining_hours Decimal? @db.Decimal
+
+  @@schema("indr")
+}
+
+view assignment_v_reporting_painters {
+  painter_id   String?
+  painter_name String?
+  current_site String?
+  category     String?
+  daily_wage   Decimal? @db.Decimal
+  status       String?
+
+  @@schema("indr")
+}
+
+view assignment_v_reporting_today_assigned {
+  assignment_id          String?   @db.Uuid
+  assignment_date        DateTime? @db.Date
+  block                  String?
+  application            String?
+  flat                   String?
+  layer_id               String?
+  layer_name             String?
+  surface_type           String?
+  assigned_wall_names    String?
+  pending_wall_names     String?
+  assigned_area          Decimal?  @db.Decimal
+  reported_area          Decimal?  @db.Decimal
+  pending_area           Decimal?  @db.Decimal
+  productivity_per_hour  Decimal?  @db.Decimal
+  hours_for_one_painter  Decimal?  @db.Decimal
+  machine_or_manual      String?
+  painter_count          Int?
+  assigned_painter_ids   String[]
+  assigned_painter_names String[]
+  reporting_status       String?
+
+  @@schema("indr")
+}
+
+view assignment_v_reporting_wall_dropdown {
+  block                        String?
+  application                  String?
+  flat                         String?
+  layer_id                     String?
+  layer_name                   String?
+  layer_order                  Decimal? @db.Decimal
+  surface_type                 String?
+  wall_name                    String?
+  wall_area                    Decimal? @db.Decimal
+  already_done_area            Decimal? @db.Decimal
+  pending_area                 Decimal? @db.Decimal
+  is_assigned_today            Boolean?
+  assigned_today_assignment_id String?  @db.Uuid
+  assigned_today_area          Decimal? @db.Decimal
+
+  @@schema("indr")
+}
+
+view assignment_v_rollover {
+  source_id          String?
+  source_wall_id     String?
+  section            String?
+  priority_rank      Int?
+  source_table       String?
+  block              String?
+  application        String?
+  flat               String?
+  layer_id           String?
+  layer_name         String?
+  surface_type       String?
+  layer_order        Decimal?  @db.Decimal
+  billable           Boolean?
+  wall_name          String?
+  wall_area          Decimal?  @db.Decimal
+  remaining_area     Decimal?  @db.Decimal
+  oldest_date        DateTime? @db.Date
+  eligibility_status String?
+  risk_reason        String?
+
+  @@schema("indr")
+}
+
+view assignment_v_surface_wall {
+  surface_id   String?
+  block        String?
+  application  String?
+  flat_id      String?
+  flat         String?
+  wall_name    String?
+  surface_type String?
+  wall_area    Decimal? @db.Decimal
+
+  @@schema("indr")
+}
+
+view assignment_v_tomorrow_work_demand {
+  source_id              String?
+  section                String?
+  priority_rank          Int?
+  source_table           String?
+  source_wall_id         String?
+  block                  String?
+  application            String?
+  flat                   String?
+  layer_id               String?
+  layer_name             String?
+  surface_type           String?
+  layer_order            Decimal?  @db.Decimal
+  billable               Boolean?
+  wall_count             Int?
+  wall_names             String?
+  remaining_area         Decimal?  @db.Decimal
+  machine_or_manual      String?
+  productivity_mode_rule String?
+  productivity_per_hour  Decimal?  @db.Decimal
+  required_hours         Decimal?  @db.Decimal
+  oldest_date            DateTime? @db.Date
+  eligibility_status     String?
+  risk_reason            String?
+  is_hour_based          Boolean?
+  total_hours            Decimal?  @db.Decimal
+  reported_hours         Decimal?  @db.Decimal
+  remaining_hours        Decimal?  @db.Decimal
+
+  @@schema("indr")
+}
+
+view assignment_v_work_demand_wall_source {
+  source_id          String?
+  source_wall_id     String?
+  section            String?
+  priority_rank      Int?
+  source_table       String?
+  block              String?
+  application        String?
+  flat               String?
+  layer_id           String?
+  layer_name         String?
+  surface_type       String?
+  layer_order        Decimal?  @db.Decimal
+  billable           Boolean?
+  wall_name          String?
+  wall_area          Decimal?  @db.Decimal
+  remaining_area     Decimal?  @db.Decimal
+  oldest_date        DateTime? @db.Date
+  eligibility_status String?
+  risk_reason        String?
+  is_hour_based      Boolean?
+  total_hours        Decimal?  @db.Decimal
+  reported_hours     Decimal?  @db.Decimal
+  remaining_hours    Decimal?  @db.Decimal
+
+  @@schema("indr")
+}
+
+view v_billing_floor_layer_detail {
+  row_type               String?
+  section_title          String?
+  floor_label            String?
+  floor_no               Int?
+  application            String?
+  flat                   String?
+  description            String?
+  layer_name             String?
+  layer_sort             Decimal?  @db.Decimal
+  unit                   String?
+  nos                    Decimal?  @db.Decimal
+  ceiling_area           Decimal?  @db.Decimal
+  ceiling_batch          String?
+  ceiling_batch_no       Int?
+  ceiling_billing_date   DateTime? @db.Date
+  ceiling_billing_number String?
+  wall_area              Decimal?  @db.Decimal
+  wall_batch             String?
+  wall_batch_no          Int?
+  wall_billing_date      DateTime? @db.Date
+  wall_billing_number    String?
+  batch_summary          String?
+  latest_row_batch_no    Int?
+  is_latest_batch        Boolean?
+  row_highlight          String?
+  total_area             Decimal?  @db.Decimal
+
+  @@schema("indr")
+}
+
+view v_billing_floor_layer_latest {
+  row_type               String?
+  section_title          String?
+  floor_label            String?
+  floor_no               Int?
+  application            String?
+  flat                   String?
+  description            String?
+  layer_name             String?
+  layer_sort             Decimal?  @db.Decimal
+  unit                   String?
+  nos                    Decimal?  @db.Decimal
+  ceiling_area           Decimal?  @db.Decimal
+  ceiling_batch          String?
+  ceiling_batch_no       Int?
+  ceiling_billing_date   DateTime? @db.Date
+  ceiling_billing_number String?
+  wall_area              Decimal?  @db.Decimal
+  wall_batch             String?
+  wall_batch_no          Int?
+  wall_billing_date      DateTime? @db.Date
+  wall_billing_number    String?
+  batch_summary          String?
+  latest_row_batch_no    Int?
+  is_latest_batch        Boolean?
+  row_highlight          String?
+  total_area             Decimal?  @db.Decimal
+
+  @@schema("indr")
+}
+
+view v_billing_floor_layer_totals {
+  row_type              String?
+  section_title         String?
+  floor_label           String?
+  floor_no              Int?
+  layer_name            String?
+  unit                  String?
+  total_ceiling_area    Decimal? @db.Decimal
+  total_wall_area       Decimal? @db.Decimal
+  total_area            Decimal? @db.Decimal
+  latest_batch_no       Int?
+  has_latest_batch_rows Boolean?
+  included_descriptions String?
+
+  @@schema("indr")
+}
+
+view v_billing_layer_surface_billed {
+  id                 String?
+  application        String?
+  flat               String?
+  row_type           String?
+  report_description String?
+  floor_no           Int?
+  floor_label        String?
+  layer_name         String?
+  surface_type       String?
+  billing_date       DateTime? @db.Date
+  billing_number     String?
+  rate               Decimal?  @db.Decimal(12, 2)
+  billing_area       Decimal?  @db.Decimal
+  batch              String?
+  batch_no           Int?
+
+  @@schema("indr")
+}
+
+view v_floor_billing_1st_coat_paint {
+  row_type               String?
+  section_title          String?
+  floor_label            String?
+  floor_no               Int?
+  application            String?
+  flat                   String?
+  description            String?
+  layer_name             String?
+  layer_sort             Decimal?  @db.Decimal
+  unit                   String?
+  nos                    Decimal?  @db.Decimal
+  ceiling_area           Decimal?  @db.Decimal
+  ceiling_batch          String?
+  ceiling_batch_no       Int?
+  ceiling_billing_date   DateTime? @db.Date
+  ceiling_billing_number String?
+  wall_area              Decimal?  @db.Decimal
+  wall_batch             String?
+  wall_batch_no          Int?
+  wall_billing_date      DateTime? @db.Date
+  wall_billing_number    String?
+  batch_summary          String?
+  latest_row_batch_no    Int?
+  is_latest_batch        Boolean?
+  row_highlight          String?
+  total_area             Decimal?  @db.Decimal
+
+  @@schema("indr")
+}
+
+view v_floor_billing_1st_coat_primer {
+  row_type               String?
+  section_title          String?
+  floor_label            String?
+  floor_no               Int?
+  application            String?
+  flat                   String?
+  description            String?
+  layer_name             String?
+  layer_sort             Decimal?  @db.Decimal
+  unit                   String?
+  nos                    Decimal?  @db.Decimal
+  ceiling_area           Decimal?  @db.Decimal
+  ceiling_batch          String?
+  ceiling_batch_no       Int?
+  ceiling_billing_date   DateTime? @db.Date
+  ceiling_billing_number String?
+  wall_area              Decimal?  @db.Decimal
+  wall_batch             String?
+  wall_batch_no          Int?
+  wall_billing_date      DateTime? @db.Date
+  wall_billing_number    String?
+  batch_summary          String?
+  latest_row_batch_no    Int?
+  is_latest_batch        Boolean?
+  row_highlight          String?
+  total_area             Decimal?  @db.Decimal
+
+  @@schema("indr")
+}
+
+view v_floor_billing_1st_fine_putty {
+  row_type               String?
+  section_title          String?
+  floor_label            String?
+  floor_no               Int?
+  application            String?
+  flat                   String?
+  description            String?
+  layer_name             String?
+  layer_sort             Decimal?  @db.Decimal
+  unit                   String?
+  nos                    Decimal?  @db.Decimal
+  ceiling_area           Decimal?  @db.Decimal
+  ceiling_batch          String?
+  ceiling_batch_no       Int?
+  ceiling_billing_date   DateTime? @db.Date
+  ceiling_billing_number String?
+  wall_area              Decimal?  @db.Decimal
+  wall_batch             String?
+  wall_batch_no          Int?
+  wall_billing_date      DateTime? @db.Date
+  wall_billing_number    String?
+  batch_summary          String?
+  latest_row_batch_no    Int?
+  is_latest_batch        Boolean?
+  row_highlight          String?
+  total_area             Decimal?  @db.Decimal
+
+  @@schema("indr")
+}
+
+view v_floor_billing_2nd_coat_paint {
+  row_type               String?
+  section_title          String?
+  floor_label            String?
+  floor_no               Int?
+  application            String?
+  flat                   String?
+  description            String?
+  layer_name             String?
+  layer_sort             Decimal?  @db.Decimal
+  unit                   String?
+  nos                    Decimal?  @db.Decimal
+  ceiling_area           Decimal?  @db.Decimal
+  ceiling_batch          String?
+  ceiling_batch_no       Int?
+  ceiling_billing_date   DateTime? @db.Date
+  ceiling_billing_number String?
+  wall_area              Decimal?  @db.Decimal
+  wall_batch             String?
+  wall_batch_no          Int?
+  wall_billing_date      DateTime? @db.Date
+  wall_billing_number    String?
+  batch_summary          String?
+  latest_row_batch_no    Int?
+  is_latest_batch        Boolean?
+  row_highlight          String?
+  total_area             Decimal?  @db.Decimal
+
+  @@schema("indr")
+}
+
+view v_floor_billing_2nd_fine_putty {
+  row_type               String?
+  section_title          String?
+  floor_label            String?
+  floor_no               Int?
+  application            String?
+  flat                   String?
+  description            String?
+  layer_name             String?
+  layer_sort             Decimal?  @db.Decimal
+  unit                   String?
+  nos                    Decimal?  @db.Decimal
+  ceiling_area           Decimal?  @db.Decimal
+  ceiling_batch          String?
+  ceiling_batch_no       Int?
+  ceiling_billing_date   DateTime? @db.Date
+  ceiling_billing_number String?
+  wall_area              Decimal?  @db.Decimal
+  wall_batch             String?
+  wall_batch_no          Int?
+  wall_billing_date      DateTime? @db.Date
+  wall_billing_number    String?
+  batch_summary          String?
+  latest_row_batch_no    Int?
+  is_latest_batch        Boolean?
+  row_highlight          String?
+  total_area             Decimal?  @db.Decimal
+
+  @@schema("indr")
+}
